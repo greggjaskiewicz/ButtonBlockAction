@@ -25,8 +25,9 @@
 import Foundation
 import UIKit
 
+
 final class ButtonBlockAction {
-    fileprivate let button: UIButton
+    fileprivate weak var button: UIButton?
     fileprivate var blocksPerAction: [UIControlEvents.RawValue: ()->()] = [:]
 
     init(button: UIButton) {
@@ -36,6 +37,13 @@ final class ButtonBlockAction {
         button.addTarget(self, action: #selector(touchUpOutside), for: .touchUpOutside)
         button.addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
         button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    }
+
+    deinit {
+        self.button?.removeTarget(self, action: #selector(touchDown), for: .touchDown)
+        self.button?.removeTarget(self, action: #selector(touchUpOutside), for: .touchUpOutside)
+        self.button?.removeTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
+        self.button?.removeTarget(self, action: #selector(touchCancel), for: .touchCancel)
     }
 
     @objc func touchDown() {
@@ -66,4 +74,3 @@ final class ButtonBlockAction {
         self.blocksPerAction[controlEvents.rawValue] = block
     }
 }
-
