@@ -25,7 +25,7 @@
 import Foundation
 import UIKit
 
-class ButtonBlockAction {
+final class ButtonBlockAction {
     fileprivate let button: UIButton
     fileprivate var blocksPerAction: [UIControlEvents.RawValue: ()->()] = [:]
 
